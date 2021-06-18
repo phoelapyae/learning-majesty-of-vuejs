@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Vue</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    
+    <div class="container">
+        <h1>Type 2 numbers and choose operation!</h1>
+        <input type="text" v-model.number="a" @keyup.enter="calculate">
+        <select name="" id="" v-model="operator">
+            <option value="+">+</option>
+            <option value="-">-</option>
+            <option value="*">*</option>
+            <option value="/">/</option>
+        </select>
+        <input type="text" v-model.number="b" @keyup.enter="calculate">
+        <h3>Result is {{a}} {{operator}} {{b}} = {{calculate}}</h3>
+        <pre>
+            {{ $data }}
+        </pre>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.js"></script>
+    <script>
+        new Vue({
+            el: '.container',
+            data: {
+                a: 1,
+                b: 2,
+                operator: "+"
+            },
+            computed: {
+                calculate: function(){
+                    switch(this.operator){
+                        case('+'): 
+                            return this.a + this.b;
+                            break;
+                        case('-'): 
+                            return this.a - this.b;
+                            break;
+                        case('*'): 
+                            return this.a * this.b;
+                            break;
+                        case('/'): 
+                            return this.a / this.b;
+                            break;
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List Rendring</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body>
+    
+    <div class="container">
+        <h1>This is me</h1>
+        <ul class="list-group">
+            <li v-for="(value,key,index) in person" class="list-group-item">
+                {{index}}: {{ key }} = {{ value }} 
+            </li>
+        </ul>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.min.js"></script>
+    <script>
+        new Vue({
+            el: '.container',
+            data: {
+                person: {
+                    name: 'Zin Myo Maung',
+                    weight: '150lb',
+                    height: '150m',
+                    eyeColor: 'blue',
+                    favoriteFood: 'Orange'
+                }
+            }
+        })
+    </script>
+</body>
+</html>
