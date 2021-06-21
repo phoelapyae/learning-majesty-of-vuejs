@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Stories</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        
+        <div>
+            <h1>Let's hear some famous stories! ({{ famous.length }})</h1>
+            
+            <ul class="list-group">
+                <story v-for="(story,index) in stories" :key="index" :story="story" :favorite="favorite"></story>
+            </ul>
+        </div>
+        <pre>
+            {{ $data }}
+        </pre>
+    </div>
+
+    <template id="story-template">
+        <li class="list-group-item">
+            {{ story.writer }} said "{{ story.plot }}". Story upvotes {{ story.upvotes }}.
+            <button v-show="!story.voted" @click="upvote" class="btn btn-default">
+                Upvote
+            </button>
+            <button v-show="!isFavorite" @click="setFavorite" class="btn btn-primary">
+                Favorite
+            </button>
+            <span v-show="isFavorite" class="glyphicon glyphicon-star pull-right" aria-hidden="true"></span>
+        </li>
+    </template>
+        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.js"></script>
+    <script>
+
+        Vue.component('story', {
+            props: ['story','favorite'],
+            template: '#story-template',
+            methods: {
+                upvote: function(){
+                    this.story.upvotes += 1
+                    this.story.voted = true
+                },
+                setFavorite: function(){
+                    this.favorite = this.story
+                }
+            },
+            computed: {
+                isFavorite: function(){
+                    return this.story == this.favorite
+                }
+            }
+            
+        });
+        
+        new Vue({
+            el: '.container',
+            data: {
+                stories: [
+                    {
+                        plot: "I crashed my car today!",
+                        writer: "Alex",
+                        upvotes: 28,
+                        voted: false
+                    },
+                    {
+                        plot: "Yesterday, someone stole my bag!",
+                        writer: "John",
+                        upvotes: 8,
+                        voted: false
+                    },
+                    {
+                        plot: "Someone ate my chocolate...",
+                        writer: "John",
+                        upvotes: 50,
+                        voted: false
+                    },
+                    {
+                        plot: "I ate someone's chocolate!",
+                        writer: "Alex",
+                        upvotes: 66,
+                        voted: false
+                    },
+                ],
+                query: '',
+                favorite: {}
+            },
+            methods: {
+                storiesBy: function(writer){
+                    return this.stories.filter(function(story){
+                        return story.writer === writer
+                    })
+                }
+            },
+            computed: {
+                famous: function(){
+                    return this.stories.filter(function(story){
+                        return story.upvotes > 25
+                    })
+                },
+                search: function(){
+                    var query = this.query 
+                    return this.stories.filter(function(story){
+                        return story.plot.includes(query)
+                    }) 
+
+                }
+            }
+        })
+    </script>
+</body>
+</html>

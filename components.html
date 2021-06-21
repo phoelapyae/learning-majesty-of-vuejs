@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello VUE</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <story :story="{plot: 'My horse is amazing.', writer: 'Mr. Weebl'}"></story>
+        <story :story="{plot: 'Narwhals invented Shish Kebab.', writer: 'Mr. Weebl'}"></story>
+        <story :story="{plot: 'The dark side of the Force is stronger.', writer: 'Darth Vader'}"></story>
+    </div>
+
+    <template id="story-template">
+       <h1>
+           {{ story.writer }} said "{{ story.plot}}!"
+       </h1>
+    </template>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.js"></script>
+    <script>
+
+        Vue.component('story', {
+            props: ['story'],
+            template: `#story-template`
+        })
+
+        new Vue({
+            el: '.container',
+        })
+
+    </script>
+</body>
+</html>

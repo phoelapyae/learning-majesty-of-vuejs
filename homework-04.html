@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    
+
+    <div class="container">
+        <h1>Mayor Voting</h1>
+        <ul class="list-group">
+            <li v-for="(mayor,index) in mayors" :key="index" class="list-group-item">
+                {{ mayor.name }} ({{ mayor.votes }})
+                <button class="btn btn-primary" @click="mayor.votes++">Vote</button>
+            </li>
+        </ul>
+        <input @keyup.delete="clear" placeholder="Press 'delete' to reset." class="form-control">
+        <h3>Our mayor is {{ current_mayor.name }} </h3>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.min.js"></script>
+    <script>
+        new Vue({
+            el: '.container',
+            data: {
+                mayors: [
+                    {
+                        name: 'Zin Myo Maung',
+                        votes: 0
+                    },
+                    {
+                        name: 'Messi',
+                        votes: 0
+                    },
+                    {
+                        name: 'Phoe La Pyae',
+                        votes: 0
+                    },
+                    {
+                        name: 'Min Maw Khon',
+                        votes: 0
+                    },
+                    {
+                        name: 'Roneldo',
+                        votes: 0
+                    }
+                ]
+            },
+            computed: {
+                current_mayor: function(){
+                    const selected_mayor = this.mayors.sort(function(first,second){
+                        return second.votes - first.votes
+                    })
+                    return selected_mayor[0];
+                }
+            },
+            methods: {
+                clear: function(){
+                    this.mayors = this.mayors.map(function(mayor){
+                        mayor.votes = 0
+                        return mayor
+                    })
+                }
+            }
+
+        })
+    </script>
+</body>
+</html>

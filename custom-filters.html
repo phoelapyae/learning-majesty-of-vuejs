@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Filters</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Real identities of Super Heroes!</h1>
+        <ul class="list-group">
+            <li class="list-group-item" v-for="hero in heroes">
+                {{ hero | snap}}
+            </li>
+        </ul>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.js"></script>
+    <script>
+
+        Vue.filter('snap', function(hero){
+            return hero.secretId + ' is ' + hero.firstname + ' ' + hero.lastname + ' in real life!'
+        })
+
+        new Vue({
+            el: '.container',
+            data: {
+                heroes: [
+                    { firstname: 'Bruce', lastname:'Wayne', secretId: 'Batman'},
+                    { firstname: 'Clark', lastname: 'Kent', secretId: 'Superman'},
+                    { firstname: 'Jay', lastname: 'Garrick', secretId: 'Flash'},
+                    { firstname: 'Peter', lastname: 'Parker', secretId: 'Spider-Man'}
+                ]
+            }
+        })
+    </script>
+</body>
+</html>

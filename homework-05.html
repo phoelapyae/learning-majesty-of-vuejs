@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework 5</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body>
+    
+    <div class="container">
+        <div>
+            <h3>People of Gaulthan</h3>
+            <ul class="list-group">
+                <li v-for="person in people" class="list-group-item">
+                    {{ person.name }} is {{ person.age }} years old.
+                </li>
+            </ul>
+            <h3>Older than 65</h3>
+            <ul class="list-group">
+                <li v-for="person in olderThan65" class="list-group-item">
+                    {{ person.name }} is {{ person.age }} years old.
+                </li>
+            </ul>
+        </div>
+        <pre>
+            {{ $data }}
+        </pre>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.js"></script>
+    <script src="lodash.js"></script>
+    <script>
+        new Vue({
+            el: '.container',
+            data: {
+                people: [
+                    {
+                        name: 'Zin Myo Maung',
+                        age: 25
+                    },
+                    {
+                        name: 'Phoe La Pyae',
+                        age: 75
+                    },
+                    {
+                        name: 'Leo Messi',
+                        age: 40
+                    },
+                    {
+                        name: 'Christiano Roneldo',
+                        age: 80
+                    },
+                    {
+                        name: 'Lampard',
+                        age: 78
+                    },
+                ]
+            },
+            methods: {
+                orderedPeople: function(){
+                    return _.orderBy(this.people,'age')
+                }
+            },
+            computed: {
+                olderThan65: function(){
+                    return this.people.filter(function(person){
+                        return person.age > 65
+                    })
+                }
+            }
+        })
+    </script>
+</body>
+</html>

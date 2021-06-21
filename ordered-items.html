@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordered Results</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body>
+    <div class="container">
+        <h1>Let's hear some stories!</h1>
+        <ul class="list-group">
+            <li v-for="story in orderedStories" class="list-group-item">
+                {{ story.writer }} said {{ story.plot }}
+                upvoted {{ story.upvotes }} times.
+            </li>
+        </ul>
+        <div class="btn btn-primary" @click="order = order * -1">Reverse order</div>
+        <pre>
+            {{ $data }}
+        </pre>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.js"></script>
+    <script>
+        new Vue({
+            el: '.container',
+            data: {
+                stories: [
+                    {
+                        plot: "I crashed my car today!",
+                        writer: "Alex",
+                        upvotes: 28
+                    },
+                    {
+                        plot: "Yesterday, someone stole my bag!",
+                        writer: "John",
+                        upvotes: 8
+                    },
+                    {
+                        plot: "Someone ate my chocolate...",
+                        writer: "John",
+                        upvotes: 50
+                    },
+                    {
+                        plot: "I ate someone's chocolate!",
+                        writer: "Alex",
+                        upvotes: 66
+                    },
+                ],
+                query: '',
+                order: -1
+            },
+            computed: {
+                orderedStories: function(){
+                    let order = this.order;
+                    return this.stories.sort(function(a,b){
+                        return (a.upvotes - b.upvotes) * order;
+                    })
+                }
+            }
+        })
+    </script>
+</body>
+</html>
