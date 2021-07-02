@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passing Arguments</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body>
+    <div id="app" class="container">
+        <p style="font-size: 140px;" class="text-center">
+            {{ votes }}
+        </p>
+
+        <food @voted="totalVote" name="Hunbarger"></food>
+        <food @voted="totalVote" name="Apple"></food>
+        <food @voted="totalVote" name="Orange"></food>
+
+        <h1>Log:</h1>
+        <li v-for="log in logs" class="list-group-item">
+            {{ log }} received a vote!
+        </li>
+    </div>
+
+    <template id="food">
+        <div class="text-center col-lg-4">
+            <p style="font-size: 40px;">
+                {{ votes }}
+            </p>
+            
+            <button @click="vote" class="btn btn-primary">
+            
+                {{ name }}
+            
+            </button>
+            
+        </div>
+    </template>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.js"></script>
+    <script>
+
+        Vue.component('food',{
+            props: ['name'],
+            template: '#food',
+            data: function(){
+                return {
+                    votes: 0
+                }
+            },
+            methods: {
+                vote: function(event){
+                    
+                    this.votes++
+                    this.$emit('voted',event.srcElement.textContent)
+                }
+            }
+        })
+
+        new Vue({
+            el: '#app',
+            data: {
+                votes: 0,
+                logs: []
+            },
+            methods: {
+                totalVote: function(food){
+                    this.votes++
+                    this.logs.push(food)
+                }
+            }
+        })
+    </script>
+</body>
+</html>

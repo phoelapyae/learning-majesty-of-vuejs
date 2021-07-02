@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movies</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div id="app" class="container p-5">
+        <table class="table table-stripted">
+            <tr>
+                <td>#</td>
+                <td>Title</td>
+                <td>Director</td>
+                <td>Action</td>
+            </tr>
+            <tr is="movie" v-for="movie in movies" :movie="movie">
+
+            </tr>
+        </table>
+        <div class="row">
+            <button class="btn btn-primary" @click="createMovie()"> 
+                Add new movie
+            </button>
+        </div>
+        <!-- <pre>
+            {{ $data }}
+        </pre> -->
+    </div>
+</body>
+
+<template id="template-movie">
+    <tr>
+        <td>
+            {{ movie.id }}
+        </td>
+        <td>
+            <input v-if="movie.editing" v-model="movie.title" type="text" class="form-control">
+            <span v-else>
+                {{ movie.title }}
+            </span>
+        </td>
+        <td>
+            <input v-if="movie.editing" v-model="movie.director" type="text" class="form-control">
+            <span v-else>
+                {{ movie.director }}
+            </span>
+        </td>
+        <td>
+            <div v-if="!movie.editing" class="btn-group">
+                <button class="btn btn-primary" @click="editMovie(movie)">
+                    Edit 
+                </button>
+                <button class="btn btn-danger" @click="deleteMovie(movie)">
+                    Delete
+                </button>
+            </div>
+
+            <div v-else class="btn-group">
+                <button v-if="movie.id" class="btn btn-primary" @click="updateMovie(movie)">
+                    Update
+                </button>
+                <button v-else class="btn btn-success" @click="storeMovie(movie)">
+                    Save
+                </button>
+                <button class="btn btn-default" @click="movie.editing = false">
+                    Cancel
+                </button>
+            </div>
+            
+        </td>
+    </tr>
+    
+</template>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+
+    Vue.component('movie',{
+        template: '#template-movie',
+        props: ['movie'],
+        methods: {
+            editMovie: function(movie){
+                movie.editing = true
+            },
+            updateMovie: function(movie){
+                axios.patch('http://localhost:8000/api/movies/'+movie.id,movie)
+                .then(function(){
+                    movie.editing = false
+                })
+            },
+            deleteMovie: function(movie){
+                let index = this.$parent.movies.indexOf(movie)
+                this.$parent.movies.splice(index,1)
+                axios.delete('http://localhost:8000/api/movies/'+movie.id)
+            },
+            storeMovie: function(movie){
+                axios.post('http://localhost:8000/api/movies',movie)
+                .then(function(movie){
+                    vm.fetchMovies()
+                    movie.editing = false
+                })
+            }
+        }
+    })
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            movies: []
+        },
+        mounted: function(){
+            this.fetchMovies()
+        },
+        methods: {
+            fetchMovies: function(){
+                axios.get('http://localhost:8000/api/movies')
+                    .then(function(response){
+                        var moviesReady = response.data.map(function(movie){
+                            movie.editing = false
+                            return movie 
+                        })
+                        vm.movies = moviesReady
+                    })
+            },
+            createMovie: function(){
+                var newMovie = {
+                    "title": "",
+                    "director": "",
+                    "editing": true
+                }
+                this.movies.push(newMovie)
+            }
+        }
+    })
+</script>
+</html>

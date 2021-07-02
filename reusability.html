@@ -14,7 +14,12 @@
             <h1>Let's hear some famous stories! ({{ famous.length }})</h1>
             
             <ul class="list-group">
-                <story v-for="(story,index) in stories" :key="index" :story="story" :favorite="favorite"></story>
+                <story 
+                v-for="(story,index) in stories" 
+                :key="index" :story="story" 
+                :favorite="favorite"
+                @update="updateFavorite"
+            ></story>
             </ul>
         </div>
         <pre>
@@ -28,7 +33,7 @@
             <button v-show="!story.voted" @click="upvote" class="btn btn-default">
                 Upvote
             </button>
-            <button v-show="!isFavorite" @click="setFavorite" class="btn btn-primary">
+            <button v-show="!isFavorite" @click="markAsFavorite" class="btn btn-primary">
                 Favorite
             </button>
             <span v-show="isFavorite" class="glyphicon glyphicon-star pull-right" aria-hidden="true"></span>
@@ -48,6 +53,9 @@
                 },
                 setFavorite: function(){
                     this.favorite = this.story
+                },
+                markAsFavorite: function(){
+                    this.$emit('update', this.story)
                 }
             },
             computed: {
@@ -95,6 +103,9 @@
                     return this.stories.filter(function(story){
                         return story.writer === writer
                     })
+                },
+                updateFavorite: function(story){
+                    this.favorite = story
                 }
             },
             computed: {
